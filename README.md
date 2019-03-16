@@ -1,0 +1,1 @@
+This is inventory management web app of www.hungryjars.com
