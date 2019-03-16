@@ -1,0 +1,35 @@
+{
+  "name": "hungary_jars",
+  "version": "1.0.0",
+  "description": "Hungary jars",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rohit",
+  "license": "ISC",
+  "dependencies": {
+    "after-load": "^1.0.4",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "crypto": "^1.0.1",
+    "ejs": "^2.6.1",
+    "excel-export": "^0.5.1",
+    "excel4node": "^1.5.0",
+    "express": "^4.16.3",
+    "express-fileupload": "^1.0.0-alpha.1",
+    "html-pdf": "^2.2.0",
+    "indian-pincode-database": "^1.0.2",
+    "moment": "^2.22.2",
+    "mysql": "^2.15.0",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^4.6.8",
+    "officegen": "^0.4.5",
+    "officegen-2": "^0.3.7",
+    "phantom": "^6.0.3",
+    "pincode": "^1.0.0",
+    "request": "^2.88.0",
+    "requestify": "^0.2.5",
+    "supervisor": "^0.12.0"
+  }
+}

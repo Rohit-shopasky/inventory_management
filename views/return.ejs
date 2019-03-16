@@ -1,0 +1,287 @@
+<html>
+<head>
+      <title>Return</title>
+	
+	   <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-1.10.2.js"></script>           
+       <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    
+       <script src="views/js/return.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:40px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+#total_amount
+{
+float:right;font-weight:bold;margin-top:-30px;margin-right:200px;
+}
+
+.product_name_show
+{
+float:left;margin-top:-15px;margin-left:10px;
+}
+
+.jars_input
+{
+margin-top:-10px;
+}
+
+.price{
+float:right;margin-top:-15px;
+}
+
+.main_title
+{
+font-size:20px;margin-top:-10px;
+}
+
+.order_number
+{
+float:right;margin-top:-25px;
+}
+
+table.products_table th,table.products_table td{
+   
+    
+	border:1px solid #e0e0e0;
+}
+
+table.combo_products_table th,table.combo_products_table td{
+   
+    
+	border:1px solid #e0e0e0;
+	
+}
+
+.loader_div
+{
+position:fixed;z-index:1;top:270px;left:600px;width:200px;height:100px;background-color: rgba(0, 0, 0, 0.8);border-radius:5px;
+display:none;
+}
+
+#loader_image
+{
+margin-top:15px;
+}
+
+#loading_text
+{
+margin-top:15px;color:white;
+}
+.tablecss td
+{
+  padding:0px;padding-left:10px;
+}
+
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s3 m3 l3">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+
+ <!-- table starts -->
+<div id="right_content" class="col s8 m10 l10">
+ <div class="card white">
+  <div class="card-content gray-text">
+   <center><span class="main_title">Return Products</span></center>
+   <span id="order_no" class="order_number" style="display:none;"><%=order_no%></span>
+   <br>
+    <div class="row">
+		 
+	<table class="products_table tablecss"> 
+	<thead>
+	<tr>
+	   <th>Name</th>
+	   <th>Broken</th>
+	   <th>Expired</th>
+	   <th>Defected</th>
+	   <th>Rejected</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% for(var i=0;i<all_products.length;i++) {%>
+	<tr>
+	
+	<td><%=all_products[i].name %></td>
+	<td style="width:200px;"><input type="number" id="<%=all_products[i].product_id %>"  value="0" class="validate" onchange="add_product(this.id,this.value,'Broken')"  /></td>
+	<td style="width:200px;"><input type="number" id="<%= all_products[i].product_id%>"  value="0" class="validate" onchange="add_product(this.id,this.value,'Expired')"  /></td>
+	<td style="width:200px;"><input type="number" id="<%= all_products[i].product_id%>"  value="0" class="validate"  onchange="add_product(this.id,this.value,'Defected')" /></td>
+	<td style="width:200px;"><input type="number" id="<%= all_products[i].product_id%>"  value="0" class="validate" onchange="add_product(this.id,this.value,'Rejected')"  /></td>
+	</tr>
+	<% }  %>
+	</tbody>
+	
+    </table>
+    <br>	
+	<!--center><span class="main_title">Return Combo Products</span></center -->
+	<br>
+	<!-- table class="combo_products_table tablecss"> 
+	<thead>
+	<tr>
+	   <th>Name</th>
+	   <th>Broken</th>
+	   <th>Expired</th>
+	   <th>Defected</th>
+	   <th>Rejected</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% for(var i=0;i<all_combos.length;i++) {%>
+	<tr>
+	<td><%=all_combos[i].combo_name %></td>
+	<td style="width:200px;"><input type="number" id="<%=all_combos[i].combo_id%>" onchange="add_combo(this.id,this.value,'Broken')"  value="0" class="validate"  /></td>
+	<td style="width:200px;"><input type="number" id="<%=all_combos[i].combo_id%>" onchange="add_combo(this.id,this.value,'Expired')"  value="0" class="validate"  /></td>
+	<td style="width:200px;"><input type="number" id="<%=all_combos[i].combo_id%>" onchange="add_combo(this.id,this.value,'Defected')" value="0" class="validate"  /></td>
+	<td style="width:200px;"><input type="number" id="<%=all_combos[i].combo_id%>" onchange="add_combo(this.id,this.value,'Rejected')" value="0" class="validate"  /></td>
+	</tr>
+	<% } %>
+	</tbody>
+	
+    </table -->
+
+        </div> <!-- row ends -->
+		
+		<div class="row">
+		<br>
+		
+	<center><button id="complete_order" class="btn waves-effect">SAVE and continue</button/></center>
+	<span id="total_amount"></span>
+	<br>
+	</div>
+  </div>
+  
+ 
+	
+  </div>
+		</div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+  
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+<script>
+
+
+
+</script>
+
+
+
+

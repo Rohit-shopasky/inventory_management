@@ -1,0 +1,345 @@
+<html>
+<head>
+      <title>Promo Codes</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+		  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> 
+		  
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+       
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+	  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+       <script src="views/js/promo.js"></script>
+       <script src="https://momentjs.com/downloads/moment.min.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+</style>
+<body>
+
+   
+  
+ <div class="row">
+  <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add Promo Code</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="code_text" type="text" class="validate">
+          <label for="code_text">Promo code*</label>
+        </div> 
+		
+		<div class="input-field col s6">
+          <input id="start_date" type="text" class="datepicker">
+          <label for="start_text">Start Date*</label>
+        </div> 
+		
+		<div class="input-field col s6">
+          <input id="end_date" type="text" class="datepicker">
+          <label for="end_text">End Date*</label>
+        </div> 
+		
+		<div class="input-field col s6">
+          <input id="total_valid_count" type="number">
+          <label for="total_valid_count">Total Codes*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="remaning_valid_count" type="number">
+          <label for="remaning_valid_count">Remaning Codes*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="discount_percentage" type="number">
+          <label for="discount_percentage">Discount%</label>
+        </div>
+		
+		<div class="input-field col s12">
+          <input id="description" type="text" class="validate">
+          <label for="description">Code Description</label>
+        </div> 
+		
+      </div>
+     
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h4>Edit  promocode</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        
+		<div class="input-field col s6">
+          <input id="e_code_text" type="text" class="validate">
+          <label for="e_code_text">Promo code*</label>
+        </div> 
+		
+		<div class="input-field col s6">
+          <input id="e_start_date" type="text" class="datepicker">
+          <label for="e_start_text">Start Date*</label>
+        </div> 
+		
+		<div class="input-field col s6">
+          <input id="e_end_date" type="text" class="datepicker">
+          <label for="e_end_text">End Date*</label>
+        </div> 
+		
+		<div class="input-field col s6">
+          <input id="e_total_valid_count" type="number">
+          <label for="e_total_valid_count">Total Codes*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_remaning_valid_count" type="number">
+          <label for="e_remaning_valid_count">Remaning Codes*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_discount_percentage" type="number">
+          <label for="e_discount_percentage">Discount%</label>
+        </div>
+		
+		<div class="input-field col s12">
+          <input id="e_description" type="text" class="validate">
+          <label for="e_description">Code Description</label>
+        </div> 
+		
+		
+      </div>
+     <span id="edit_promocode_id" style="visibility:hidden"></span>
+     <a id="save_edits"  href="#" class="modal-close waves-effect waves-light btn">Save edits</a>
+	  <a id="delete_row"  href="#" class="modal-close waves-effect waves-light red btn">Disable</a>
+    </form>
+  </div>
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <center><h4>Promo Orders</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <span id="promo_text" style="font-weight:bold;"></span>
+	  <div class="row">
+         <table class="striped centered">
+		  <thead>
+		    <tr>
+			   <th>Order No</th>
+			   <th>Customer Name</th>
+			   <th>Deduction Amount</th>
+			</tr>
+		  </thead>
+		  <tbody id="parent">
+		  
+		  </tbody>
+		  
+		 </table> 
+      </div>
+	  
+	  
+    </div>
+   
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+ 
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">Promo Codes</span>
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">add</i>Promo</a>
+        <table class="striped centered">
+        <thead>
+          <tr>
+             
+              
+		      <th>S.No</th>
+			  <th>Code</th>
+			  <th>Start Date</th>
+			  <th>End Date</th>
+			  <th>Total Codes</th>
+			  <th>Remaning Codes</th>
+			  <th>Discount%</th>
+			  <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		
+       <% for (var i = 0; i < result.length;i++) {  %>
+	   
+      <tr class="row" title="" name=""   id="<%= result[i].id%>">
+	   <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= i+1 %></td>
+       <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= result[i].code %></td>
+	   <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= result[i].start_date_string %></td>
+	   <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= result[i].end_date_string %></td>
+	   <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= result[i].total_valid_count %></td>
+	   <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= result[i].remaning_valid_count %></td>
+	   <td href="#modal3" class="modal-trigger order" onclick="show_orders(<%= result[i].id %>)"><%= result[i].discount_percentage %></td>
+	   <td><% if(result[i].start_date<result[i].end_date){ %><a title="Click to edit or delete this row" onclick="promo_details(<%= result[i].id%>)" class="edit_link" href="#modal2" class="modal-trigger"><i class="material-icons">edit</i></a><%} else {%>Expired<% } %></td>
+      </tr>    
+   <% } %>
+          
+        </tbody>
+      </table>
+              
+        </div>
+        
+      </div>
+	  
+	  
+	  
+	  
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+

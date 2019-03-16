@@ -1,0 +1,243 @@
+<html>
+<head>
+      <title>Stock of </title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>    
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+	  	  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+       <script src="views/js/stock.js"></script>
+</head>
+<style>
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s3 m3 l3">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add Jars</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+	  
+        <div class="input-field col s6">
+            <input type="number" id="jars" name="jars" class="validate"  />
+            <label for="jars">Jars*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="manufacture_date" type="text" class="datepicker">
+          <label for="manufacture_date">Manufacture Date</label>
+        </div> 
+		
+
+      </div>
+     <span style="color:#ee6e73;font-size:15px;">Fields marked * are required</span>
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h4>Edit Jars</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        
+		<div class="input-field col s6">
+            <input type="number" id="e_jars" class="validate"  />
+            <label for="e_jars">Jars*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_manufacture_date" type="text" class="datepicker">
+          <label for="e_manufacture_date">Manufacture Date</label>
+        </div> 
+		
+      </div>
+     <span id="edit_product_id" style="visibility:hidden"></span>
+     <a id="save_edits"  href="#" class="modal-close waves-effect waves-light btn">Save edits</a>
+	  
+    </form>
+	<span id="stock_id" style="visibility:hidden"></span>
+  </div>
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        
+        <div class="card-content gray-text">
+            <span>All orders of <b><%= customer_name %></b></span>
+        <table class="striped centered">
+        <thead>
+          <tr>
+		       <th>Order No</th>
+           <th>Total Payable</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		    <% for(var i=0;i<result.length;i++) { 
+
+          %>
+          <tr>
+            <td><%= result[i].order_id %></td>
+            <td><%= result[i].total_payable %></td>
+          </tr>
+        <% } %>
+          
+        </tbody>
+      </table>
+              
+        </div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+

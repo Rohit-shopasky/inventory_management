@@ -1,0 +1,381 @@
+<html>
+<head>
+      <title>Edit Order</title>
+	
+	   <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-1.10.2.js"></script>           
+       <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    
+       <script src="views/js/edit_outlet_order.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:40px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+#total_amount
+{
+float:right;font-weight:bold;margin-top:-30px;margin-right:200px;
+}
+
+.product_name_show
+{
+float:left;margin-top:-15px;margin-left:10px;
+}
+
+.jars_input
+{
+margin-top:-10px;
+}
+
+.price{
+float:right;margin-top:-15px;
+}
+
+.main_title
+{
+font-size:20px;margin-top:-10px;
+}
+
+.order_number
+{
+float:right;margin-top:-25px;
+}
+
+table.products_table th,table.products_table td{
+   
+    
+	border:1px solid #e0e0e0;
+}
+
+table.combo_products_table th,table.combo_products_table td{
+   
+    
+	border:1px solid #e0e0e0;
+}
+
+.loader_div
+{
+position:fixed;z-index:1;top:270px;left:600px;width:200px;height:100px;background-color: rgba(0, 0, 0, 0.8);border-radius:5px;
+display:none;
+}
+
+#loader_image
+{
+margin-top:15px;
+}
+
+#loading_text
+{
+margin-top:15px;color:white;
+}
+
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s3 m3 l3">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+
+ <!-- table starts -->
+<div id="right_content" class="col s8 m10 l10">
+ <div class="card white">
+  <div class="card-content gray-text">
+   <center><span class="main_title">Edit order</span></center>
+   <span class="order_number">Order Number: <%= order_no %></span>
+   <br>
+    <div class="row">
+		 
+	<table class="products_table"> 
+	<thead>
+	<tr>
+	   <th>Name</th>
+	   <th>Amount</th>
+	   <th>Jars</th>
+	   <th>Quantity</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% for(var i=0;i<all_products.length;i++) {
+		var balance = Number(all_stock[i].jars) - Number(sum_of_order_details[i].sold);
+		if(all_products[i].status==1) {
+		%>
+	<tr>
+	<td><%=all_products[i].name %></td>
+	<td><%= all_products[i].price%></td>
+	<td><%= all_products[i].on_order==0 ? balance : 'On Order'%></td>
+	<td style="width:200px;"><input value="" type="number" id="jars<%= all_products[i].product_id %>"  name="<%= all_products[i].product_id %>" onchange="order_quantity(this.value,this.name,<%= result[i].jars === null ? '0' : result[i].jars%>,<%= result[i].price %>,<%= all_products[i].jars%>)" value="0" class="validate"  /></td>
+	</tr>
+	<% } } %>
+	</tbody>
+	
+    </table>	
+	
+	<br>	
+	<center><span class="main_title">Combo Products</span></center>
+	<br>
+	
+	<table class="combo_products_table"> 
+	<thead>
+	<tr>
+	   <th>Name</th>
+	   <th>Amount</th>
+	   
+	   <th>Quantity</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% for(var i=0;i<combo_products.length;i++) {%>
+	<tr>
+	<td><%=combo_products[i].combo_name %></td>
+	<td><%= combo_products[i].price%></td>
+	
+	<td style="width:200px;"><input value="0" type="number" id="combo<%= combo_products[i].combo_id %>"  name="<%= combo_products[i].combo_id %>" onchange="combo_order_quantity(this.value,<%= combo_products[i].combo_id%>,<%= combo_products[i].price %>,<%= combo_quantity[i].quantity_ordered===null ? '0': combo_quantity[i].quantity_ordered %>)" value="0" class="validate"  /></td>
+	</tr>
+	<% } %>
+	</tbody>
+	
+    </table>
+	
+	
+        </div>
+		
+		<div class="row">
+		
+		<br>
+		<center><span class="main_title">Customer Details</span></center>
+		<div class="loader_div">
+		<center>
+		<div id="loader_image" class="preloader-wrapper small active">
+       <div class="spinner-layer spinner-red-only">
+        <div class="circle-clipper left">
+        <div class="circle"></div>
+        </div><div class="gap-patch">
+        <div class="circle"></div>
+        </div><div class="circle-clipper right">
+        <div class="circle"></div>
+         </div>
+         </div>
+         </div>
+		 </center>
+		 <center><p id="loading_text">Getting State and City</p></center>
+		 </div>
+		<br>
+		
+		<div class="input-field col s4">
+           <input type="text" id="outlet_name" class="autocomplete">
+          <label for="outlet_name">Outlet Name*</label>
+        </div>
+		
+		<div class="input-field col s4">
+          <input id="billing_address" value="" type="text" class="validate">
+          <label for="billing_address">Billing Address*</label>
+        </div>
+		
+		<div class="input-field col s4">
+            <input type="number" oninput="get_location_data(this.value)" value="" id="user_pincode" name="user_pincode" class="validate"  maxlength="12" />
+            <label for="user_pincode">Pincode*</label>
+        </div>
+		
+
+		<div class="input-field col s4">
+        <select id="states" value="" class="browser-default" name="states"></select>
+       </div>
+	   
+	   <div class="input-field col s4">
+        <select id="cities"  class="browser-default" name="cities">
+		<option value="" disabled selected>Choose City</option>
+		</select>
+       </div>
+	   
+	   <div class="input-field col s4">
+            <input type="number" id="user_phone" value="" name="user_phone" class="validate"  maxlength="12" />
+            <label for="user_phone">Phone*</label>
+        </div>
+		
+	  
+	   
+	   <div style="display:none;" class="input-field col s4">
+        <select id="order_source" onchange="change_for_foodcloud(this.value,<%= order_no %>)" class="browser-default">
+		  <option value="" disabled selected>Choose Order Source</option>
+          <option value="Amazon" <%= order_details[0].order_source==='Amazon' ? 'selected':'' %>>Amazon</option>
+          <option value="FoodCloud" <%= order_details[0].order_source==='FoodCloud' ? 'selected':'' %>>Food Cloud</option>
+          <option value="WhatsApp" <%= order_details[0].order_source==='WhatsApp' ? 'selected':'' %>>WhatsApp</option>
+		  <option value="Call" <%= order_details[0].order_source==='Call' ? 'selected':'' %>>Call</option>
+		  <option value="HJTeam" <%= order_details[0].order_source==='HJTeam' ? 'selected':'' %>>HJ Team</option>
+		  <option value="LBB" <%= order_details[0].order_source==='LBB' ? 'selected':'' %>>LBB</option>
+		  <option value="PropShop24" <%= order_details[0].order_source==='PropShop24' ? 'selected':'' %>>PropShop24</option>
+		  <option value="Others" <%= order_details[0].order_source==='Others' ? 'selected':'' %>>Others</option>
+        </select>
+        
+       </div>
+	   
+	   <div class="input-field col s4">
+          <input id="outlet_note" value="<%= order_details[0].note %>" type="text" class="validate">
+          <label for="outlet_note">Note</label>
+        </div>
+		
+		<div class="input-field col s4">
+          <input id="outlet_email" value="" type="email" class="validate">
+          <label for="outlet_email">Email</label>
+        </div>
+		
+		<div class="input-field col s4">
+             <input type="number" id="commision" />
+            <label for="commision">Commision%</label>
+        </div>
+		
+		<div class="input-field col s4">
+            <input type="number" value="<%= order_details[0].shipping_cost %>" id="shipping_cost" name="shipping_cost" class="validate"  maxlength="12" />
+            <label for="shipping_cost">Shipping Cost</label>
+        </div>
+		
+		<div class="input-field col s4">
+            <input type="text"  id="gst_no"  class="validate"/>
+            <label for="gst_no">GSTIN</label>
+        </div>
+	   
+	 </div>
+	
+
+	<center><button id="complete_order" class="btn waves-effect">Complete order</button/></center>
+	<span id="total_amount"></span>
+	<br>
+	</div>
+  </div>
+  
+  
+	
+  </div>
+		</div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     <span style="visibility:hidden;" id="state"></span>
+	 <span style="visibility:hidden;" id="city"></span>
+	 <span style="visibility:hidden;" id="promo_code_value"></span>
+	 
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+<script>
+
+
+
+</script>
+
+
+
+

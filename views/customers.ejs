@@ -1,0 +1,348 @@
+<html>
+<head>
+      <title>Customers</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      
+	   <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+	  
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-1.10.2.min.js"></script>    
+		 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+    
+       <script src="views/js/customer.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+.search_nav
+{
+ background-color:white;width:500px;margin-top:-60px;
+}
+
+.search_result
+{
+width:500px;position:fixed;margin-left:280px;
+}
+
+.tablecss td
+{
+ padding:6px;font-size:14px;
+}
+
+tablecss td
+{
+font-size:14px;
+}
+
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+             <% include menu_items.ejs %>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add New Customer</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        
+		<div class="input-field col s6">
+           <input type="text" id="user_name" class="autocomplete">
+          <label for="user_name">Name*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="user_address" type="text" class="validate">
+          <label for="user_address">Address*</label>
+        </div>
+		
+		<div class="input-field col s6">
+        <select id="states" class="browser-default" name="states"></select>
+       </div>
+	   
+	   <div class="input-field col s6">
+        <select id="cities" name="cities" class="browser-default" >
+		<option value="" disabled selected>Choose City</option>
+		</select>
+       </div>
+	   
+	    <div class="input-field col s6">
+            <input type="number" id="user_phone" name="user_phone" class="validate"  maxlength="12" />
+            <label for="user_phone">Phone*</label>
+        </div>
+	   
+	   <div class="input-field col s6">
+            <input type="number" id="user_pincode" name="user_pincode" class="validate"  maxlength="12" />
+            <label for="user_pincode">Pincode</label>
+        </div>
+
+		<div class="input-field col s12">
+          <input id="user_email" type="email" class="validate">
+          <label for="user_email">Email</label>
+        </div>
+		
+      </div>
+     <span style="color:#ee6e73;font-size:15px;">Fields marked * are required</span>
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h4>Edit Customer Details</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+       
+	   <div class="input-field col s6">
+           <input type="text" id="customer_name" class="autocomplete">
+          <label for="user_name">Name*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="customer_address" type="text" class="validate">
+          <label for="user_address">Address*</label>
+        </div>
+		
+		<div class="input-field col s6">
+        <select id="customer_state" class="browser-default" name="customer_state"></select>
+       </div>
+	   
+	   <div class="input-field col s6">
+        <select id="city" class="browser-default" name="city">
+		<option value="" disabled selected>Choose City</option>
+		</select>
+       </div>
+	   
+	    <div class="input-field col s6">
+            <input type="number" id="customer_phone" name="user_phone" class="validate"  maxlength="12" />
+            <label for="customer_phone">Phone*</label>
+        </div>
+	   
+	   <div class="input-field col s6">
+            <input type="number" id="customer_pincode" name="user_pincode" class="validate"  maxlength="12" />
+            <label for="customer_pincode">Pincode</label>
+        </div>
+
+		<div class="input-field col s12">
+          <input id="customer_email" type="email" class="validate">
+          <label for="customer_email">Email</label>
+        </div>
+	   <span style="visibility:hidden" id="cus_id"></span>
+      </div>
+     <span id="edit_product_id" style="visibility:hidden"></span>
+     <a id="save_edits"  href="#" class="modal-close waves-effect waves-light btn">Save edits</a>
+	  <!--a id="delete_row"  href="#" class="modal-close waves-effect waves-light red btn">Delete row</a -->
+    </form>
+	<br>
+  </div>
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+
+
+    
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">All Customers</span>
+		
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">add</i>Customer</a>
+		<center><nav class="search_nav">
+		<div class="input-field col s6 s12 red-text">
+                                <i style="margin-top:5px;" class="red-text material-icons prefix">search</i>
+                                <input style="margin-top:-10px;" oninput="search(this.value)" type="text" placeholder="search" id="search" class="autocomplete red-text">
+                                </div>
+		
+		</nav>
+		<div id="search_result" class="search_result"></div>
+		<a style="float:right;" target="_blank" href="/all_customers_excel_export">Excel Export</a>
+		</center>
+        <table class="striped centered tablecss">
+        <thead>
+          <tr>
+             
+              <th>ID</th>
+			  <th>Name</th>
+			  <th>Address</th>
+			  <th>State</th>
+			  <th>City</th>
+			  <th>Pincode</th>
+			  <th>Phone</th>
+			  <th>Email</th>
+			  <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="parent_table">
+		
+          <% for (var i = 0; i < result.length;i++) { %>
+    <tr  class="row"  id="customer<%= result[i].customer_id%>">
+      <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].customer_id %></td>
+      <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].customer_name %></td>
+      <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].customer_address %></td>
+	  <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].customer_state %></td>
+	  <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].city %></td>
+	  <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].pincode %></td>
+	  <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].phone %></td>
+	  <td onclick="show_orders_of_customer(<%=result[i].customer_id%>,'<%= result[i].customer_name %>')"><%= result[i].email %></td>
+	  <td><a title="Click to edit or delete this row" onclick="customer_details(<%= result[i].customer_id%>)" class="edit_link" href="#modal2" class="modal-trigger"><i class="material-icons">edit</i></a></td>
+    </tr>    
+   <% } %>
+          
+        </tbody>
+      </table>
+          <center>
+	<ul class="pagination">
+	<% var loop=Number(customers_count)/20;
+       for(var i=0;i<loop;i++) {
+	%>
+    <li id="<%= i+1%>" class="<%= page==i+1 ? 'active':'waves-effect' %>"><a href="/show_all_customers?page=<%= i+1 %>"><%= i+1 %></a></li>
+  <% } %>
+   </ul>
+  </center>    
+        </div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,44 @@
+<html>
+<head>
+      <title>Products</title>
+<meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+        
+		<script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-1.10.2.js"></script> 
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+   
+  
+</head>
+
+
+
+<body>
+
+<input onfocusout="myFunction(this.value)" type="text" id="pincode">
+
+</body>
+</html>
+
+<script>
+function myFunction(val)
+{
+    var url="http://postalpincode.in/api/pincode/305001";
+   $.ajax({
+   type:"GET",
+   url:url,
+   dataType: 'jsonp',
+    success: function(data) { alert("Success");  console.log(data);},
+    error: function() { alert('Failed!'); },
+
+     }); 
+
+
+}
+
+</script>

@@ -1,0 +1,208 @@
+<html>
+<head>
+      <title>Track</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>    
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+    
+       <script src="views/js/track.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add New Shipping</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+         <div class="input-field col s6">
+          <input id="company_name" type="text">
+          <label for="company_name">Company Name*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="track_url" type="text">
+          <label for="track_url">Track URL*</label>
+        </div>
+
+      </div>
+     
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+  
+  
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">Shipping</span>
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">add</i> URL</a>
+        <table class="striped centered">
+        <thead>
+          <tr>
+		       <th>S.No</th>
+		      <th>Company Name</th>
+			  <th>Track URL</th>
+			  <th>Created Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		<% for(var i=0;i<result.length;i++) {%>
+		<tr>
+		<td><%= result[i].id %></td>
+        <td><%= result[i].company_name %></td>
+		<td><%= result[i].track_url %></td>
+		<td><%= result[i].time %></td>
+		</tr>
+		<%} %>
+        </tbody>
+      </table>
+              
+        </div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+

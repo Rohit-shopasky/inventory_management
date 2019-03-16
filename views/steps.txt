@@ -1,0 +1,5 @@
+jab order dispatch karenge tab vo
+shipping company name select karenge or order no denge.
+Ab hame vo number search kerna hai sare shipping urls me se aur vo url nikalna hai
+
+ab nilkla hua url email me send ker dena hai

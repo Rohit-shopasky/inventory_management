@@ -1,0 +1,437 @@
+<html>
+<head>
+      <title>Retail</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>    
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+    
+       <script src="views/js/outlet.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+.tablecss td
+{
+padding:0px font-size:12px;
+}
+
+.loader_div
+{
+position:fixed;z-index:1;top:270px;left:600px;width:200px;height:100px;background-color: rgba(0, 0, 0, 0.8);border-radius:5px;
+display:none;
+}
+
+#loader_image
+{
+margin-top:15px;
+}
+
+#loading_text
+{
+margin-top:15px;color:white;
+}
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+  <div class="loader_div">
+		<center>
+		<div id="loader_image" class="preloader-wrapper small active">
+       <div class="spinner-layer spinner-red-only">
+        <div class="circle-clipper left">
+        <div class="circle"></div>
+        </div><div class="gap-patch">
+        <div class="circle"></div>
+        </div><div class="circle-clipper right">
+        <div class="circle"></div>
+         </div>
+         </div>
+         </div>
+		 </center>
+		 <center><p id="loading_text">Getting State and City</p></center>
+		 </div>
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h5>Add New Retail</h5></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+         <div class="input-field col s6">
+          <input id="outlet_name" type="text">
+          <label for="outlet_name">Name*</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="branch_name" type="text">
+          <label for="branch_name">Brand Name*</label>
+        </div>
+		
+		<div class="input-field col s6">
+           <select id="outlet_type">
+            <option value="" disabled selected>Retail Type</option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+          </select>
+        </div>
+		
+		<div class="input-field col s6">
+		 <input id="commision" type="number" min=0>
+		 <label for="commision">Commision%</label>
+		</div>
+		
+		<div class="input-field col s6">
+          <input id="contact_person" type="text">
+          <label for="contact_person">Contact Person </label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="phone" type="number">
+          <label for="phone">Phone</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="billing_address" type="text">
+          <label for="billing_address">Billing Address</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="shipping_address" type="text">
+          <label for="shipping_address">Shipping Address</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="gst_no" type="text">
+          <label for="gst_no">GST NO.</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="pincode" oninput="get_location_data(this.value)" type="text">
+          <label for="pincode">Pincode</label>
+        </div>
+		
+		<div class="input-field col s6">
+        <select id="states" class="browser-default" name="states"></select>
+       </div>
+	   
+	   <div class="input-field col s6">
+        <select id="cities" class="browser-default" name="cities">
+		<option value="" disabled selected>Select City</option>
+		</select>
+       </div>
+
+      </div>
+     
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  <!-- Modal ends-->
+  
+  
+     <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h5>Edit Retail</h5></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	 
+    
+      <div class="row">
+         <div class="input-field col s6">
+          <input id="e_outlet_name" type="text">
+          <label for="e_outlet_name">Name*</label>
+        </div>
+		
+		 <div class="input-field col s6">
+          <input id="e_branch_name" type="text">
+          <label for="e_branch_name">Brand Name*</label>
+        </div>
+		
+		<div class="input-field col s6">
+           <select id="e_outlet_type" class="browser-default">
+            <option value="" disabled selected>Retail Type</option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+          </select>
+        </div>
+		
+		
+		
+		<br><br><br><br>
+		<div class="input-field col s6">
+		 <input id="e_commision" type="number" min=0>
+		 <label for="e_commision">Commision%</label>
+		</div>
+		
+		<div class="input-field col s6">
+          <input id="e_contact_person" type="text">
+          <label for="e_contact_person">Contact Person </label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_phone" type="number">
+          <label for="e_phone">Phone</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_billing_address" type="text">
+          <label for="e_billing_address">Billing Address</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_shipping_address" type="text">
+          <label for="e_shipping_address">Shipping Address</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_gst_no" type="text">
+          <label for="e_gst_no">GST No.</label>
+        </div>
+		
+		<div class="input-field col s6">
+          <input id="e_pincode" oninput="get_location_data(this.value)" type="text">
+          <label for="e_pincode">Pincode</label>
+        </div>
+		
+		<div class="input-field col s6">
+        <select id="e_states" class="browser-default" name="states">
+			<option value="" disabled selected>Select State</option>
+		</select>
+       </div>
+	   
+	   <div class="input-field col s6">
+        <select id="e_cities" class="browser-default" name="cities">
+		<option value="" disabled selected>Select City</option>
+		</select>
+       </div>
+	   
+	   
+		
+      </div>
+     <span id="e_outlet_id" style="visibility:hidden;"></span>
+	 <a id="save_edits"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    
+  
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  <!-- Modal ends-->
+  
+  
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">Retail</span>
+		<br>
+		<div class="col s2 m2 l2">
+	   <select id="month_filter" class="browser-default">
+	    <option value="" >All Months</option>
+        <option value="1">Jan</option>
+        <option value="2">Feb</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+		<option value="5">May</option>
+		<option value="6">June</option>
+		<option value="7">July</option>
+		<option value="8">August</option>
+		<option value="9">September</option>
+		<option value="10">October</option>
+		<option value="11">November</option>
+		<option value="12">December</option>
+        </select>
+	   </div>
+	   
+	    <div class="col s2 m2 l2">
+	   <select id="year_filter" class="browser-default">
+	    <option value="" selected>All Years</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        </select>
+	   </div>
+	   
+	   <a title="Select month or year from drop down" style="margin-top:10px;position:absolute;margin-left:90px;" href="#" id="print_excel">Print Excel</a>
+		
+		
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">add</i> Retail</a>
+        <table class="striped centered tablecss">
+        <thead>
+          <tr>
+		      <th>S.No</th>
+		      <th>Outlet Name</th>
+			  <th>Brand name</th>
+			  <th>Outlet Type</th>
+			  <th>Commision%</th>
+			  <th>Contact Person</th>
+			  <th>Phone</th>
+			  <th>Billing Address</th>
+			  <th>Shipping Address</th>
+			  <th>GST NO.</th>
+			  <th>Action</th>
+			  <th>Order</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		<% for(var i=0;i<result.length;i++) {%>
+		  <tr>
+		     <td><%= i+1 %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].outlet_name %></td>
+			<td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].branch_name %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].outlet_type %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].commision %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].contact_person %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].phone %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].billing_address %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].shipping_address %></td>
+			 <td onclick="go_to_orders(<%= result[i].outlet_id %>)"><%= result[i].gst_no %></td>
+			 <td><% if(result[i].status!=0) {%><a title="Click to edit or delete this row" onclick="edit_row(<%= result[i].outlet_id %>)" class="edit_link" href="#modal2" class="modal-trigger"><i class="material-icons">edit</i></a><% }else {%>Disabled<% } %></td>
+			 <td><a href="/create_outlet_order?outlet_id=<%= result[i].outlet_id %>">Order</a></td>
+		  </tr>
+		<% } %>
+        </tbody>
+      </table>
+              
+        </div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+

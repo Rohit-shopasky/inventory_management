@@ -1,0 +1,505 @@
+<html>
+<head>
+      <title>Products</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+#btn
+{
+height: 34px;
+	width:85px;
+    line-height: 20px;
+    padding: 7 0 0 0;
+	font-size:12px;
+	margin-left:50px;
+}
+
+table.product_table th,table.product_table td
+{
+  padding:8px;
+  font-size:14px;
+	
+}
+
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+             <% include menu_items.ejs %>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add Product</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="product_name" type="text" class="validate">
+          <label for="product_name">Product Name*</label>
+        </div>
+		
+		<!--div class="input-field col s6">
+          <input id="sku_id" type="text" class="validate">
+          <label for="sku_id">SKU_ID*</label>
+        </div -->
+		<br>
+		<div class="input-field col s6">
+         <select id="category" class="browser-default">
+    <option value="" disabled selected>Select Category</option>
+	<% for(var i=0;i<category_result.length;i++){ %>
+    <option value="<%=category_result[i].id %>"><%= category_result[i].category_name %></option>
+   
+	<% } %>
+  </select>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="unit_price" name="unit_price" class="validate"  />
+            <label for="unit_price">Unit Price*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="tax" name="tax" class="validate"  />
+            <label for="tax">Tax*</label>
+        </div>
+
+		<div class="input-field col s6">
+            <input type="number" id="price" name="price" class="validate"  />
+            <label for="price">MRP*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="selling_quantity_gms" class="validate"  />
+            <label for="price">Selling Quantity</label>
+        </div>
+		
+		
+        <div class="input-field col s12">
+           <input id="ingredients" type="text" class="validate">
+          <label for="ingredients">Ingredients</label>
+        </div>
+		
+		<div class="input-field col s12">
+           <input id="instructions" type="text" class="validate">
+          <label for="instructions">Instructions</label>
+        </div>
+      </div>
+	  
+	  
+	  
+     <span style="color:#ee6e73;font-size:15px;">Fields marked * are required</span>
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h4>Edit Product</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+   
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="e_product_name" type="text" class="validate">
+          <label for="e_product_name">Product Name</label>
+        </div>
+
+		
+		
+
+		<div class="input-field col s6">
+            <input type="number" id="e_unit_price" class="validate"  />
+            <label for="e_unit_price">Unit Price*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="e_tax" name="price" class="validate"  />
+            <label for="e_price">Tax*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="e_price" name="price" class="validate"  />
+            <label for="e_price">MRP*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="e_selling_quantity_gms" class="validate"  />
+            <label for="e_selling_quantity_gms">Selling Quantity</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="text" id="e_hsn" class="validate"  />
+            <label for="e_hsn">HSN/SAC</label>
+        </div>
+		
+        <div class="input-field col s12">
+           <input id="e_ingredients" type="text" class="validate">
+          <label for="e_ingredients">Ingredients</label>
+        </div>
+		
+		<div class="input-field col s12">
+           <input id="e_instructions" type="text" class="validate">
+          <label for="e_instructions">Instructions</label>
+        </div>
+		
+		<div class="input-field col s12">
+         <p>
+      
+        <input class="e_on_order" id="e_on_order" name="e_on_order" type="checkbox"/>
+        <label for="e_on_order">On Order</label>
+      
+    </p>
+       </div>
+		
+      </div>
+	  
+	  <br>
+	  
+	  <div class="input-field col s12">
+           <input id="e_order_url" type="text" class="validate">
+          <label for="e_order_url">Order Now Button URL</label>
+        </div>
+      </div>
+	  
+	  
+	  
+	  
+<form id="form" enctype="multipart/form-data" method="post" name="fileinfo">
+<div style="margin-left:-50px;" class="file-field input-field">
+ <div id="btn" class="btn">
+   <span><i class="small material-icons">perm_media</i></span>
+  
+      <input  onchange="show_file()"  type="file" name="sampleFile" id="file_upload"></div>
+	  
+	  <div  class="file-path-wrapper">
+	  <input style="margin-top:-10px;" placeholder="Product Image should be 150px X 150px" class="file-path validate" id="f_path" type="text"></div>
+	  
+	  </div>
+</form>
+	  
+     <span id="edit_product_id" style="visibility:hidden"></span>
+     <a id="save_edits"  href="#" class="modal-close waves-effect waves-light btn">Save edits</a>
+	  <a id="delete_row"  href="#" class="modal-close waves-effect waves-light red btn">Disable Product</a>
+    
+  </div>
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">All Products</span>
+		
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">add</i> product</a>
+		
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" style="margin-right:10px;" href="/category">Category</a>
+		
+		
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#in_stock">In Stock</a></li>
+        <li class="tab col s3"><a href="#on_order">On Order</a></li>
+		<li class="tab col s3"><a href="#disabled_products">Disabled</a></li>
+      </ul>
+    </div>
+	
+  <!-- instock tab start -->	
+ <div id="in_stock" class="col s12">
+	
+	    <!-- table starts-->
+	   <table class="striped centered product_table">
+        <thead>
+          <tr>
+              <th>S.No</th>
+              <th>Name</th>
+			  <th>Total Jars</th>
+			  <th>Sold</th>
+			  <th>Stock</th>
+			  <th>Category</th>
+			  <th>Unit Price</th>
+			  <th>Tax</th>
+			  <th>MRP</th>
+			  <th>Selling Quantity</th>
+			  <th>SKU_ID</th>
+			  <th>Live</th>
+			  <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		
+          <% 
+		     var count = 0
+		  for (var i = 0; i < result.length;i++) { var j=i+1; 
+		  var balance = Number(all_stock[i].jars) - Number(sum_of_order_details[i].sold);
+		  if(result[i].on_order==0 && result[i].status==1) { count++;
+		  %>
+    <tr class="row" title="Click to see stock of this product"  id="<%= result[i].product_id%>" style="<%= balance<1 ? 'background-color:#ef5350;' : ''%>">
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= count %></td>
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].name %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= all_stock[i].jars===null ? '0' :all_stock[i].jars %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= sum_of_order_details[i].sold %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= balance %></td>
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].category_name %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].unit_price %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].tax %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].price %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].selling_quantity_gms %>g</td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].sku_id %></td>
+	  <td><div class="switch">
+    <label>
+      <input id="<%= result[i].product_id %>live" class="live" onclick="change_visibility(this.id,<%= result[i].product_id%>)" type="checkbox" <%= result[i].shown_on_website ? 'checked':''%>>
+      <span class="lever"></span>
+    </label>
+  </div>
+  </td>
+	  <td><% if(result[i].status!=0) {%><a title="Click to edit or delete this row" onclick="edit_row(<%= result[i].product_id %>)" class="edit_link" href="#modal2" class="modal-trigger"><i class="material-icons">edit</i></a><% }else {%>Disabled<% } %></td>
+    </tr>    
+   <% }} %>
+          
+        </tbody>
+      </table>
+              
+        </div>
+        
+      <!-- table ends-->
+ 
+ <!-- instock tab ends -->
+	
+    <div id="on_order" class="col s12">
+	
+        <table class="striped centered product_table">
+		  <thead>
+		      <th>S.No</th>
+              <th>Name</th>
+			  <th>Sold</th>
+			  <th>Category</th>
+			  <th>Unit Price</th>
+			  <th>Tax</th>
+			  <th>MRP</th>
+			  <th>Selling Quantity</th>
+			  <th>SKU_ID</th>
+			  <th>Live</th>
+			  <th>Actions</th>
+		  </thead>
+		  
+		  <tbody>
+		    <%  var count = 0;
+			 for(var i=0;i<result.length;i++) {
+               if(result[i].on_order==1 && result[i].status==1) {  count++;
+			%>
+			<tr class="row" title="Click to see stock of this product"  id="<%= result[i].product_id%>">
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= count %></td>
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].name %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= sum_of_order_details[i].sold %></td>
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].category_name %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].unit_price %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].tax %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].price %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].selling_quantity_gms %>g</td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].sku_id %></td>
+	  <td><div class="switch">
+    <label>
+      <input id="<%= result[i].product_id %>live" class="live" onclick="change_visibility(this.id,<%= result[i].product_id%>)" type="checkbox" <%= result[i].shown_on_website ? 'checked':''%>>
+      <span class="lever"></span>
+    </label>
+  </div>
+  </td>
+	  <td><% if(result[i].status!=0) {%><a title="Click to edit or delete this row" onclick="edit_row(<%= result[i].product_id %>)" class="edit_link" href="#modal2" class="modal-trigger"><i class="material-icons">edit</i></a><% }else {%>Disabled<% } %></td>
+    </tr>
+			<% }} %>
+		  </tbody>
+		  
+		</table>
+	
+	</div>
+  
+  
+  <div id="disabled_products" class="col s12">
+     <table class="striped centered product_table">
+		  <thead>
+		      <th>S.No</th>
+              <th>Name</th>
+			  <th>Sold</th>
+			  <th>Category</th>
+			  <th>Unit Price</th>
+			  <th>Tax</th>
+			  <th>MRP</th>
+			  <th>Selling Quantity</th>
+			  <th>SKU_ID</th>
+			  <th>Live</th>
+			  <th>Actions</th>
+		  </thead>
+		  
+		  <tbody>
+		    <%
+			    var count=0;
+			  for(var i=0;i<result.length;i++) {
+               if(result[i].status==0) {  count++;
+			%>
+			<tr class="row" title="Click to see stock of this product"  id="<%= result[i].product_id%>">
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= count %></td>
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].name %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= sum_of_order_details[i].sold %></td>
+      <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].category_name %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].unit_price %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].tax %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><img class="rupee" src="views/images/rupee.png" width="15" height="14"><%= result[i].price %></td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].selling_quantity_gms %>g</td>
+	  <td onclick=show_stock(<%= result[i].product_id%>)><%= result[i].sku_id %></td>
+	  <td><div class="switch">
+    <label>
+      <input id="<%= result[i].product_id %>live" class="live" onclick="change_visibility(this.id,<%= result[i].product_id%>)" type="checkbox" <%= result[i].shown_on_website ? 'checked':''%>>
+      <span class="lever"></span>
+    </label>
+  </div>
+  </td>
+	  <td><% if(result[i].status!=0) {%><a title="Click to edit or delete this row" onclick="edit_row(<%= result[i].product_id %>)" class="edit_link" href="#modal2" class="modal-trigger"><i class="material-icons">edit</i></a><% }else {%>Disabled<% } %></td>
+    </tr>
+			<% }} %>
+		  </tbody>
+		  
+		</table>
+  </div>
+ 
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+<script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>    
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+	  
+	  <script src="views/js/home.js"></script>
+	  
+</body>
+</html>
+
+
+
+

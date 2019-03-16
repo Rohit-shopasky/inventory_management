@@ -1,0 +1,336 @@
+<html>
+<head>
+      <title>Combo</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+      <script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>    
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+    
+       <script src="views/js/combo.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#disable_combo
+{
+float:left;margin-left:10px;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add Combo</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+         <div class="input-field col s6">
+          <input id="combo_name" type="text" class="validate">
+          <label for="combo_name">Combo Name*</label>
+        </div>
+		
+		
+		<div class="input-field col s6">
+            <input type="number" id="unit_price"  class="validate"  />
+            <label for="unit_price">Unit Price*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="tax"  class="validate"  />
+            <label for="tax">Tax*</label>
+        </div>
+		
+		
+		<div class="input-field col s6">
+            <input type="number" id="price" name="price" class="validate"  />
+            <label for="price">MRP*</label>
+        </div>
+		
+		<div class="input-field col s6">
+       <select id="products" multiple>
+      <option value="" disabled selected>Select products</option>
+      <% for(var i=0;i<products.length;i++) { %>
+	  <option value="<%= products[i].product_id%>"><%= products[i].name%></option>
+	  <% } %>
+      </select>
+      </div>
+	  
+	  
+		
+		
+      </div>
+     
+	 
+	 <a id="form_save"  href="#" class=" waves-effect waves-light btn">Save</a>
+     
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+    <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h4>Edit Combo</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+         <div class="input-field col s6">
+          <input id="e_combo_name" type="text" class="validate">
+          <label for="e_combo_name">Combo Name*</label>
+        </div>
+		
+		<div style="display: none;" class="input-field col s6">
+          <input id="e_sku_id" type="text" class="validate">
+          <label for="e_sku_id">SKU_ID*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="e_unit_price" name="price" class="validate"  />
+            <label for="e_unit_price">Unit Price</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="e_tax" name="price" class="validate"  />
+            <label for="e_tax">Tax*</label>
+        </div>
+		
+		<div class="input-field col s6">
+            <input type="number" id="e_price" name="price" class="validate"  />
+            <label for="e_price">MRP*</label>
+        </div>
+
+      </div>
+     
+	 <a id="disable_combo" href="#" class="waves-effect waves-light red btn">Disable</a>
+	 <a id="save_edits"  href="#" class="waves-effect waves-light btn">Save edits</a>
+     <span style="visibility:hidden" id="edit_combo_id"></span>
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  <!-- Modal ends-->
+  
+  
+      <!-- Modal Starts -->
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <center><h4>Combo Details</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    <form class="col s12">
+      <div class="row">
+         <span id="text" class="text"></span>
+		 <table class="striped">
+        <thead>
+          <tr>
+              <th>Product Name</th>
+			  <th>MRP</th>
+          </tr>
+        </thead>
+
+        <tbody id="products_table">
+         
+        </tbody>
+      </table>
+
+      </div>
+
+    </form>
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  <!-- Modal ends-->
+  
+  
+  
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">Combo</span>
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">add</i> Combo</a>
+        <table class="striped centered">
+        <thead>
+          <tr>
+             
+              
+		      <th>S.No</th>
+			  <th>Combo Name</th>
+			  <th>Unit Price</th>
+			  <th>Tax</th>
+			  <th>MRP</th>
+			  <th>SKU_ID</th>
+			  <th>Created Date</th>
+			  <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		<% for(var i=0;i<result.length;i++) {%>
+		<tr>
+		<td><%= i+1 %></td>
+        <td href="#modal3" class="modal-trigger data" onclick="show_products(<%= result[i].combo_id %>,'<%= result[i].combo_name %>',<%= result[i].price%>)"><%= result[i].combo_name %></td>
+		
+		<td href="#modal3" class="modal-trigger data" onclick="show_products(<%= result[i].combo_id %>,'<%= result[i].combo_name %>',<%= result[i].price%>)"><%= result[i].unit_price %></td>
+		
+		<td href="#modal3" class="modal-trigger data" onclick="show_products(<%= result[i].combo_id %>,'<%= result[i].combo_name %>',<%= result[i].price%>)"><%= result[i].tax %></td>
+		
+		<td href="#modal3" class="modal-trigger data" onclick="show_products(<%= result[i].combo_id %>,'<%= result[i].combo_name %>',<%= result[i].price%>)"><%= result[i].price %></td>
+		
+        <td href="#modal3" class="modal-trigger data" onclick="show_products(<%= result[i].combo_id %>,'<%= result[i].combo_name %>',<%= result[i].price%>)"><%= result[i].sku_id %></td>
+		
+		<td href="#modal3" class="modal-trigger data" onclick="show_products(<%= result[i].combo_id %>,'<%= result[i].combo_name %>',<%= result[i].price%>)"><%= result[i].time %></td>
+		
+		<td><% if(result[i].status==1) {%><a title="Click to edit or delete this row" onclick="combo_details(<%= result[i].combo_id%>)" href="#modal2" class="modal-trigger edit_link"><i class="material-icons">edit</i></a><% } else { %>Disabled<% } %></td>
+		</tr>
+		<%} %>
+        </tbody>
+      </table>
+              
+        </div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+

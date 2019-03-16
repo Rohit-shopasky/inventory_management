@@ -1,0 +1,387 @@
+<html>
+<head>
+      <title>Outlet orders</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:30px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+#btn
+{
+height: 34px;
+	width:85px;
+    line-height: 20px;
+    padding: 7 0 0 0;
+	font-size:12px;
+	margin-left:50px;
+}
+
+.balance
+{
+float:right;position:relative;top:10px;right:50px;font-size:16
+}
+
+.details
+{
+
+}
+
+</style>
+<body>
+
+   
+  
+ <div class="row">
+   <% include header.ejs %>
+  <!-- content starts  -->
+  <div  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s2 m2 l2">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+             <% include menu_items.ejs %>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h4>Add Payment</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="payment_amount" type="number" class="validate">
+          <label for="payment_amount">Payment Amount*</label>
+        </div>
+		
+      </div>
+	  
+	  
+	  
+     <span style="color:#ee6e73;font-size:15px;">Fields marked * are required</span>
+	 <button id="form_save"  class=" waves-effect waves-light btn">Save</button>
+     
+    
+  </div>
+	  
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h4>Edit Payment</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+   
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="e_payment_amount" type="number" class="validate">
+          <label for="e_payment_amount">Payment Amount*</label>
+        </div>
+      </div>
+	  
+	  <br>
+	  
+	  
+	  
+	  <span id="payment_id" style="display:none;"></span>
+     <a id="save_edits"  href="#" class="modal-close waves-effect waves-light btn">Save edits</a>
+	  
+    
+  </div>
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+     <!-- Modal Starts -->
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <center><h4>Return Details</h4></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+         <table>
+		   <thead>
+		    <th>S.No</th>
+		    <th>Product Name</th>
+			<th>Broken</th>
+			<th>Expired</th>
+			<th>Defected</th>
+			<th>Rejected</th>
+		   </thead>
+		   <tbody id="return_table">
+		    
+		   </tbody>
+		 </table>
+      </div>
+
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m10 l10">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">All orders of <%= outlet_details[0].outlet_name %></span>
+		
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="/create_outlet_order?outlet_id=<%= outlet_details[0].outlet_id%>"><i class="material-icons left">add</i> Order</a>
+		
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" style="margin-right:10px;" href="#modal1"><i class="material-icons left">add</i> payment</a>
+		
+		
+		
+       <div class="col s12 m12 l12 details">
+	     <div class="col s6 m6 l6">
+		 <span><b>Billing Address:</b> <%= outlet_details[0].billing_address %></span>
+		 <br>
+		 <span><b>Shipping Address:</b> <%= outlet_details[0].shipping_address %></span>
+		 <br>
+		 <span><b>Contact person: </b><%= outlet_details[0].contact %></span>
+		 <br>
+		 <span><b>Phone: </b><%= outlet_details[0].phone %></span>
+		 <br>
+		 <span><b>GSTIN:</b> <%= outlet_details[0].gst_no%></span>
+		 <br>
+		 <span><b>State:</b><%= outlet_details[0].state%></span>
+		 <br>
+		 <span><b>City:</b><%= outlet_details[0].city %></span>
+		 <br>
+		 <span><b>Pincode:</b><%= outlet_details[0].pincode %></span>
+		 <br>
+		 <span><b>Email: </b><%= outlet_details[0].email %></span>
+		 </div>
+		 <div class="col s6 m6 l6">
+		 <span><b>Total orders: </b><%= outlet_label_details[0].total_orders %></span>
+		 <br>
+		 </span><b>Total Amount: </b>Rs<%= outlet_label_details[0].total_payable===null ?'0':outlet_label_details[0].total_payable %></span>
+		 <br>
+		 <span><b>Total Balance: </b>Rs<%= outlet_details[0].balance %></span>
+		 </div>
+		 
+	   </div>
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#in_stock">Orders</a></li>
+        <li class="tab col s3"><a href="#payments">Payments</a></li>
+		<li class="tab col s3"><a href="#return">Return</a></li>
+      </ul>
+    </div>
+	
+  <!-- instock tab start -->	
+ <div id="in_stock" class="col s12">
+	
+	    <!-- table starts-->
+	   <table class="striped centered">
+        <thead>
+          <tr>
+		      <th>S.No</th>
+              <th>Order.No</th>
+              <th>Order Date</th>
+			  <th>Total Amount</th>
+			  <th>View </th>
+			  <th>Download</th>
+			  <th>Actions</th>
+			  <th>Return</th>
+          </tr>
+        </thead>
+
+        <tbody>
+		   <% for(var i=0,s_no=all_orders.length;i<all_orders.length;i++,s_no--) {
+		      
+		   %>
+		  <tr>
+		     <td><%= i+1 %></td>
+			 <td onclick="go_to_orders(<%= all_orders[i].outlet_id %>)"><%= all_orders[i].order_id %></td>
+			 <td onclick="go_to_orders(<%= all_orders[i].outlet_id %>)"><%= all_orders[i].order_date %></td>
+			 <td onclick="go_to_orders(<%= all_orders[i].outlet_id %>)"><%= all_orders[i].total_payable %></td>
+			 
+			 <td class="data"><a class="print" href="generate_outlet_bill_customer?order_id=<%= all_orders[i].order_id%>" target="_blank"><i class="material-icons">visibility</i></a></td>
+	         <td class="data"><a onclick="merchant_copy('<%= all_orders[i].order_id%>')" href="/print_retail_bill_customer?order_id=<%= all_orders[i].order_id%>" class="print"><i class="material-icons">arrow_downward</i></a></td>
+			 
+			 <td><a title="Click to edit or delete this row" href="/edit_outlet_order?order_id=<%= all_orders[i].order_id%>" id="edit_order"><i class="material-icons">edit</i></a></td>
+			 <td><a title="Click to edit or delete this row" href="/return?order_id=<%= all_orders[i].order_id%>" id="edit_order"><i class="material-icons">replay</i></a></td>
+			 
+		  </tr>
+		<% } %>
+        </tbody>
+      </table>
+              
+        </div>
+        
+      <!-- table ends-->
+ 
+ <!-- instock tab ends -->
+	
+    <div id="payments" class="col s12">
+	
+        <table class="striped centered">
+		  <thead>
+		      <th>S.No</th>
+              <th>Payment Amount</th>
+			  <th>Date</th>
+			  <th>Actions</th>
+		  </thead>
+		  
+		  <tbody>
+		    <% for(var i=0;i<outlet_payments.length;i++) { %>
+			<tr>
+			<td><%= i+1 %></td>
+			<td><%= outlet_payments[i].payment_amount %></td>
+			<td><%= outlet_payments[i].created_date %></td>
+			<td><a title="Click to edit or delete this row" onclick="get_outlet_payment_details(<%= outlet_payments[i].payment_id %>)" href="#modal2" id="edit_payment" ><i class="material-icons">edit</i></a></td>
+			</tr>
+			<% } %>
+		  </tbody>
+		  
+		</table>
+	
+	</div>  
+	
+	<div id="return">
+	   <table class="striped centered">
+	      <thead>
+		    <th>S.No</th>
+			<th>Order No</th>
+			<th>Broken</th>
+			<th>Expired</th>
+			<th>Defected</th>
+			<th>Rejected</th>
+            <th>Date</th>
+		  </thead>
+		  
+		  <tbody>
+		    <% for(var i=0;i<product_return.length;i++) { %>
+			  <tr>
+			     <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')" class="modal-trigger return"><%= i+1 %></td>
+				 <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')" class="modal-trigger return"><%= product_return[i].order_id %></td>
+				 <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')" class="modal-trigger return"><%= product_return[i].broken %></td>
+				 <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')" class="modal-trigger return"><%= product_return[i].expired %></td>
+				 <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')" class="modal-trigger return"><%= product_return[i].defected %></td>
+				 <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')" class="modal-trigger return"><%= product_return[i].rejected %></td>
+				 <td href="#modal3" onclick="return_detail('<%=product_return[i].order_id %>')"class="modal-trigger return"><%= product_return[i].created_date %></td>
+			  </tr>
+            <% } %>			
+		  </tbody>
+	   </table>
+	</div>
+	  
+	  <div id="footer">
+	  </div>
+<script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>    
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+	  <script src="https://momentjs.com/downloads/moment.js"></script>
+	  
+	  <script src="views/js/show_outlet_order.js"></script>
+	  
+</body>
+</html>
+
+
+
+

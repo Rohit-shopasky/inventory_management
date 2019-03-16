@@ -1,0 +1,448 @@
+<html>
+<head>
+      <title>Orders</title>
+	
+	  <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel = "stylesheet"
+         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+        
+		<script type = "text/javascript"
+         src = "https://code.jquery.com/jquery-1.10.2.js"></script> 
+		 
+      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+      </script>
+     
+	  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	 
+       <script src="views/js/show_orders.js"></script>
+</head>
+<style>
+
+#header
+{
+background:#ee6e73;height:70px;
+}
+
+.heading_top
+{
+color:white;font-family:segoe print;font-weight:bold;margin-top:20px;
+}
+
+.menu_items
+{
+color:red;
+}
+
+#menu_card
+{
+height:100%;background-color:#ee6e73;width:160px;position:fixed;left:-10px;top:45px;
+}
+
+.menu_text
+{
+color:white;font-weight:bold;
+}
+
+.menu_text:hover
+{
+ cursor:pointer;color:#ee6e73;
+}
+
+.menu_icons
+{
+margin-right:10px;position:relative;top:2px;
+}
+
+#right_content
+{
+float:right;margin-right:-20px;margin-top:-6px;height:530px;
+}
+
+#open_modal
+{
+   float:right;background-color:#ee6e73;
+}
+
+#form_save
+{
+float:right;margin-right:10px;
+}
+
+#save_edits
+{
+float:right;margin-right:10px;
+}
+
+#delete_row
+{
+float:left;
+}
+
+.row
+{
+cursor:pointer;
+}
+
+#modal_cross
+{
+float:right;color:red;margin-top:-40px;margin-right:20px;
+}
+
+#customer_details
+{
+font-weight:bold;
+}
+
+.data{
+color:black;
+}
+
+table.main_table td
+{
+border-bottom:1px solid white;
+padding: 1px;font-size:13px;
+}
+
+#print_label
+{
+  float:right;
+}
+
+#shipping_excel
+{
+  float:right;position: relative; right:10px;
+}
+
+
+</style>
+<body>
+
+   
+  
+ <div class="row">
+  <% include header.ejs %>
+  
+  <!-- content starts  -->
+  <div id="content"  class="col s12 m12 l12">
+ 
+   <!-- menu starts -->
+   <div class="row">
+    <div class="col s3 m3 l3">
+      <div class="card" id="menu_card">
+        <div class="card-content white-text">
+        
+             <% include menu_items.ejs %>
+              
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- menu ends -->
+  
+   <!-- Modal Starts -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <center><h5>Shipping Label</h5></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+    
+	       <center><table class="striped">
+        <thead>
+          <tr>
+              <th>Action</th>
+			  <th>Order No</th>
+              <th>Customer</th>
+              <th>Order Date</th>
+          </tr>
+        </thead>
+
+        <tbody id="sl_parent_table">
+		
+		   <% for(var i=0;i<placed_orders.length;i++) { %>
+          <tr>
+		    <td> <input  type="checkbox" onclick="sl_print_value(this,this.value)" value="<%= placed_orders[i].order_id %>" id="<%=placed_orders[i].order_id %>l">
+  <label for="<%=placed_orders[i].order_id %>l"></label></td>
+			<td><%= placed_orders[i].order_id %></td>
+			<td><%= placed_orders[i].customer_name %></td>
+			<td><%= placed_orders[i].time %></td>
+		  </tr>
+		  <% } %>
+        </tbody>
+      </table></center>
+	  <br>
+   <a  id="print_label" class="waves-effect waves-light btn " href="#">Print Label</a>
+   <button  id="shipping_excel" class="waves-effect waves-light btn ">Print Excel</button>
+     </div>
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+  
+   <!-- Modal Starts -->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <center><h5>Order Details</h5></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+       <br>
+	  <span id="customer_details"></span>
+	  <div id="track_button_div"></div>
+	    <table class="striped">
+        <thead>
+          <tr>
+              <th>Product Name</th>
+              <th>Jars</th>
+              <th>Amount</th>
+          </tr>
+        </thead>
+
+        <tbody id="parent_table">
+         
+        </tbody>
+      </table>
+	  <br>
+	  <center><h5>Logs</h5></center>
+	    <table class="striped">
+        <thead>
+          <tr>
+              <th>User</th>
+			  <th>Action</th>
+             <th>Updated At</th>
+          </tr>
+        </thead>
+
+        <tbody id="order_logs_table">
+         
+        </tbody>
+      </table>
+	  
+	  
+	   
+     </div>
+	  
+	  
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+    <!-- Modal Starts -->
+	
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <center><h5>Shipping Details</h5></center>
+      <i id="modal_cross" class="material-icons modal-close">close</i>
+	  <div class="row">
+	      <div class="col s6">
+           <select id="company_url" class="browser-default">
+            <option value="" disabled selected>Choose company</option>
+			<% for(var i=0;i<track.length;i++) { %>
+              <option value="<%= track[i].track_url %>"><%=track[i].company_name %></option>
+            <% } %>
+			<option value="self">Self</option>
+			<option value="amazon">Amazon</option>
+            </select>
+		   </div>
+		   
+		   <div class="input-field col s6">
+            <input type="text" id="order_no" name="order_no" class="validate"  />
+            <label for="order_no">Order NO</label>
+        </div>
+		   <span style="visibility:hidden;" id="hidden_order_id"></span>
+      </div>
+	   <a id="done" style="float:right;"  href="#" class=" waves-effect waves-light btn">Done</a>
+    </div>
+   <br>
+      
+    
+  </div>  
+  
+  <!-- Modal ends-->
+  
+ <!-- table starts -->
+    <div id="right_content" class="col s11 m11 l11">
+      <div class="card white">
+        <div class="card-content gray-text">
+        <span  class="card-title">All Orders</span>
+		<a id="open_modal" class="waves-effect waves-light btn modal-trigger" href="/order"><i class="material-icons left">add</i> Order</a>
+		<a id="sl" style="float:right;margin-right:10px;" class="waves-effect waves-light btn modal-trigger" href="#modal1">Shipping Label</a>
+		<!-- a id="sl" style="float:right;margin-right:10px;" class="waves-effect waves-light btn modal-trigger" href="#modal3">MSD</a -->
+		<br>
+		<!-- Filter starts -->
+         <div class="col s2 m2 l2">		
+        <select id="status_filter" class="browser-default">
+        <option value="" >All Orders</option>
+        <option value="1" <%= filter_data.status==1 ? 'selected' :'' %>>Order placed</option>
+        <option value="2" <%= filter_data.status==2 ? 'selected' :'' %>>Order dispatched</option>
+        <option value="3" <%= filter_data.status==3 ? 'selected' :'' %>>Order Delievered</option>
+		<option value="4" <%= filter_data.status==4 ? 'selected' :'' %>>Order Cancelled</option>
+        </select>
+	   </div>
+	   
+	   <div class="col s2 m2 l2">
+	   <select id="month_filter" class="browser-default">
+	    <option value="" >All Months</option>
+        <option value="1" <%= filter_data.month==1 ? 'selected' :'' %>>Jan</option>
+        <option value="2" <%= filter_data.month==2 ? 'selected' :'' %>>Feb</option>
+        <option value="3" <%= filter_data.month==3 ? 'selected' :'' %>>March</option>
+        <option value="4" <%= filter_data.month==4 ? 'selected' :'' %>>April</option>
+		<option value="5" <%= filter_data.month==5 ? 'selected' :'' %>>May</option>
+		<option value="6" <%= filter_data.month==6 ? 'selected' :'' %>>June</option>
+		<option value="7" <%= filter_data.month==7 ? 'selected' :'' %>>July</option>
+		<option value="8" <%= filter_data.month==8 ? 'selected' :'' %>>August</option>
+		<option value="9" <%= filter_data.month==9 ? 'selected' :'' %>>September</option>
+		<option value="10" <%= filter_data.month==10 ? 'selected' :'' %>>October</option>
+		<option value="11" <%= filter_data.month==11 ? 'selected' :'' %>>November</option>
+		<option value="12" <%= filter_data.month==12 ? 'selected' :'' %>>December</option>
+        </select>
+	   </div>
+	   
+	    <div class="col s2 m2 l2">
+	   <select id="year_filter" class="browser-default">
+	    <option value="" selected>All Years</option>
+        <option value="2018" <%= filter_data.year==2018 ? 'selected' :'' %>>2018</option>
+        <option value="2019" <%= filter_data.year==2019 ? 'selected' :'' %>>2019</option>
+        
+        </select>
+	   </div>
+	   
+	   <div class="col s2 m2 l2">
+	   <select id="source_filter" class="browser-default">
+	    <option value=""  selected>All Sources</option>
+          <option value="Amazon" <%= filter_data.order_source==='Amazon' ? 'selected': '' %> >Amazon</option>
+          <option value="FoodCloud" <%= filter_data.order_source==='FoodCloud' ? 'selected': '' %>>Food Cloud</option>
+          <option value="WhatsApp" <%= filter_data.order_source==='WhatsApp' ? 'selected': '' %>>WhatsApp</option>
+		  <option value="Call" <%= filter_data.order_source==='Call' ? 'selected': '' %>>Call</option>
+		  <option value="HJTeam" <%= filter_data.order_source==='HJTeam' ? 'selected': '' %>>HJ Team</option>
+		  <option value="LBB" <%= filter_data.order_source==='LBB' ? 'selected': '' %>>LBB</option>
+      <option value="PropShop24" <%= filter_data.order_source==='PropShop24' ? 'selected': '' %>>PropShop24</option>
+      <option value="Event" <%= filter_data.order_source==='Event' ? 'selected': '' %>>Event</option>
+      <option value="PopUp" <%= filter_data.order_source==='PopUp' ? 'selected': '' %>>PopUp</option>
+		  <option value="Others" <%= filter_data.order_source==='Others' ? 'selected': '' %>>Others</option>
+        </select>
+	   </div>
+	   
+	   <a style="margin-top:10px;position:absolute;" href="#" id="filter">Apply Filter</a>
+	   <a title="Select month or year from drop down" style="margin-top:10px;position:absolute;margin-left:90px;" href="#" id="print_excel">Print Excel</a>
+        <table id="main_table" class="centered main_table">
+        <thead>
+          <tr>
+             
+              <th>Order No</th>
+			  <th>Order Date</th>
+			  <th>Customer</th>
+			  <th>Phone</th>
+			  <th>Total Amount</th>
+			  <th>Order Source</th>
+			  <th>Status</th>
+			  <th>Payment Mode</th>
+			  <th>View</th>
+			  <th>Download</th>
+			  <th>Action</th>
+			  
+
+          </tr>
+        </thead>
+
+        <tbody>
+		
+          <% for (var i = 0; i < result.length;i++) { %>
+		  
+		  <% if(result[i].status==1){var color_val="white";} else if(result[i].status==2){var color_val="#f8b98e";} else if(result[i].status==3){var color_val="#9cd9e4";} else if(result[i].status==4){var color_val="#ff3a50"; }  else if(result[i].status==5){var color_val="#dbe14c"; } var amount=result[i].total_payable;  amount=Math.round(amount) %>
+		  
+		  
+    <tr href="#modal2" class="row " style="background:<%= color_val %>" title="Click to see order in detail"  id="<%= result[i].order_id%>">
+    
+      <td href="#modal2" class="modal-trigger data" onclick='show_order_detail(<%= result[i].order_id%>)'><%= result[i].order_id %></td>
+	  
+	  <td href="#modal2" class="modal-trigger data" onclick='show_order_detail(<%= result[i].order_id%>)'><%= result[i].time %></td>
+	  
+	  <td href="#modal2" class="modal-trigger data" onclick='show_order_detail(<%= result[i].order_id%>)'><%= result[i].customer_name %></td>
+	  
+	   <td href="#modal2" class="modal-trigger data" onclick='show_order_detail(<%= result[i].order_id%>)'><%= result[i].phone %></td>
+	   
+	    <td href="#modal2" class="modal-trigger data" onclick='show_order_detail(<%= result[i].order_id%>)'><img class="rupee" src="views/images/rupee.png" width="20" height="15"><%= amount %></td>
+		
+		<td href="#modal2" class="modal-trigger data" onclick='show_order_detail(<%= result[i].order_id%>)'><%= result[i].order_source %></td>
+		
+		<td class="cl"><select <% if(result[i].status==5 ||result[i].status==4) {%> disabled <%} %> onchange=change_status(<%= result[i].order_id %>,this.value,'<%= result[i].order_source %>',) class="browser-default">
+       <option  value=""  <%= result[i].status == '' ? 'selected' : ''%> disabled>choose</option>
+       <option  value="1" <%= result[i].status == '1' ? 'selected' : 'order_placed'%>>Order Placed</option>
+      <option value="2"  <%= result[i].status == '2' ? 'selected' : 'dispatched'%>>Dispatched</option>
+      <option value="3"  <%= result[i].status == '3' ? 'selected' : 'delievered'%>>Delievered</option>
+	  <option value="5"  <%= result[i].status == '5' ? 'selected' : 'payment_received'%>>Payment Received</option>
+	  <option value="4"  <%= result[i].status == '4' ? 'selected' : 'Cancelled'%>>Cancelled</option>
+      </select></td>
+	  
+	  <td class="data"><select <% if(result[i].payment_type!="") {%> disabled <%} %> id="payment_type" onchange="payment_change(<%= result[i].order_id %>,this.value)" class="browser-default">
+		
+          <option value="Paytm" <%= result[i].payment_type=== 'Paytm' ? 'selected' : ''%>>Paytm</option>
+          <option value="Cash" <%= result[i].payment_type ==='Cash' ? 'selected' : ''%>>Cash</option>
+          <option value="payment_gateway" <%= result[i].payment_type === 'payment_gateway' ? 'selected' : ''%>>Payment Gateway</option>
+		  <option value="N/A" <%= result[i].payment_type === 'N/A' ? 'selected' : ''%>>N/A</option>
+		 
+      <option value="0"     <%= result[i].payment_type === '' ? 'selected' : ''%>>Payment Due</option>
+      <option value="multiple" <%= result[i].payment_type === 'multiple' ? 'selected' :'' %>>Multiple</option>
+          </select></td>
+		
+		<td class="data"><a class="print" target="_blank" href="/generate_bill_customer?order_id=<%= result[i].order_id %>"><i class="material-icons">visibility</i></a></td>
+	  
+	  <td class="data"><a class="print" onclick="open_merchant_copy(<%= result[i].order_id %>)"  href="/convert_to_pdf_customer?order_id=<%= result[i].order_id %>"><i class="material-icons">arrow_downward</i></a></td>
+
+	  <td> <% if(result[i].status==5 || result[i].status==4){%><i class="material-icons">lock</i><% }else {%><a href="/edit_order?order_id=<%= result[i].order_id %>"><i class="material-icons">edit</i></a><% } %></td>
+	  
+    </tr>    
+   <% } %>
+          
+        </tbody>
+      </table>
+    <% if(typeof all_orders_count!=='undefined') {%>
+	<center>
+	<ul class="pagination">
+	<% var loop=Number(all_orders_count)/50;
+       for(var i=0;i<loop;i++) {
+	%>
+    <li id="<%= i+1%>" class="<%= page==i+1 ? 'active':'waves-effect' %>"><a href="/show_all_orders?page=<%= i+1 %>"><%= i+1 %></a></li>
+  <% } %>
+   </ul>
+  </center>
+   <% } %>            
+        </div>
+        
+      </div>
+    </div>
+ <!-- table ends-->
+  
+ 
+   
+  
+     
+  </div>
+ <!-- content ends -->
+  
+	  
+	 
+  
+
+  
+	  
+	  <div id="footer">
+	  </div>
+
+</body>
+</html>
+
+
+
+
